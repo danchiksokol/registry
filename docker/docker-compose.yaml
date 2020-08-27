@@ -1,0 +1,36 @@
+
+version: '3'
+services:
+  site:
+    depends_on:
+      - db
+    volumes:
+      - ../app:/var/www/html/registry
+      - ../apache2:/etc/apache2/sites-enabled
+      - ./tmp:/tmp
+    build: .
+    container_name: site
+    ports:
+      - 80:80
+    links:
+      - db
+    restart: always
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  db:
+    image: mysql:8.0
+    restart: always
+    container_name: db
+    command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0
+    ports:
+      - 3306:3306
+    volumes:
+      - ../mysql:/var/lib/mysql
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123
+      MYSQL_DATABASE: registry
+      MYSQL_ROOT_PASSWORD: 123
