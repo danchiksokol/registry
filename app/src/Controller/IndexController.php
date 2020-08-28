@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Form\UsersType;
+use App\Services\XlsxService;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,6 +98,18 @@ class IndexController extends AbstractController
             'user/form.html.twig',
             ['form' => $form->createView()]
         );
+    }
+
+    /**
+     * @Route("/getXlsx", name="download_xlsx")
+     * @param XlsxService $xlsxService
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function getXlsx(XlsxService $xlsxService, UsersRepository $users)
+    {
+        $users = $users->findAll();
+        return $xlsxService->generate($users);
     }
 
 }
