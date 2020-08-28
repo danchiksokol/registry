@@ -1,20 +1,41 @@
 {% extends 'base.html.twig' %}
+{% use 'search/searchBar.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
-
+{% block title %}Пользователи{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/registry/src/Controller/IndexController.php'|file_link(0) }}">src/Controller/IndexController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/registry/templates/index/index.html.twig'|file_link(0) }}">templates/index/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="container">
+    </div>
+    {{ block('searchBar') }}
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Ф.И.О.</th>
+            <th scope="col">Место работы</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">Электронная почка</th>
+            <th scope="col">Страна</th>
+            <th scope="col">Город</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in users %}
+            <tr {% if row.active %} class="table-success" {% endif %}>
+                <td>{{ row.id }}</td>
+                <td>{{ row.lastname }} {{ row.Firstname }} {{ row.middlename }}</td>
+                <td>{{ row.job }}</td>
+                <td>{{ row.position }}</td>
+                <td>{{ row.phone }}</td>
+                <td>{{ row.email }}</td>
+                <td>{{ row.country }}</td>
+                <td>{{ row.city }}</td>
+                <td>{% if not row.active %}<a type="button" class="btn btn-success" href="/active/{{ row.id }}">
+                            Пришел</a> {% endif %}</td>
+                <td><a type="button" class="btn btn-secondary" href="/update/{{ row.id }}">Изменить</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% use 'search/searchBar.html.twig' %}
+
+{% block title %}Сохранение(изменение) участника{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="container">
+        <table class="table table-hover table-bordered">
+            <thead>
+            </thead>
+            <tbody>
+            <tr>
+                <td scope="col">Фамилия</td>
+                <td><label for="textarea"></label>{{ form_widget(form.lastname) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Имя</td>
+                <td><label for="textarea"></label>{{ form_widget(form.firstname) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Отчество</td>
+                <td><label for="textarea"></label>{{ form_widget(form.middlename) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Место работы</td>
+                <td><label for="textarea"></label>{{ form_widget(form.job) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Должность</td>
+                <td><label for="textarea"></label>{{ form_widget(form.position) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Телефон</td>
+                <td><label for="textarea"></label>{{ form_widget(form.phone) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Электронная почка</td>
+                <td><label for="textarea"></label>{{ form_widget(form.email) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Страна</td>
+                <td><label for="textarea"></label>{{ form_widget(form.country) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Город</td>
+                <td><label for="textarea"></label>{{ form_widget(form.city) }}</td>
+            </tr>
+            <tr>
+                <td scope="col">Пришел</td>
+                <td><label for="checkbox"></label>{{ form_widget(form.active) }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <button class="btn btn-warning" type="submit">Сохранить</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
