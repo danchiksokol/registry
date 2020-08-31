@@ -24,7 +24,7 @@
         {% for row in users %}
             <tr {% if row.active %} class="table-success" {% endif %}>
                 <td>{{ row.id }}</td>
-                <td>{{ row.lastname }} {{ row.Firstname }} {{ row.middlename }}</td>
+                <td class="fio" id="fio_{{ row.id }}">{{ row.lastname }} {{ row.Firstname }} {{ row.middlename }}</td>
                 <td>{{ row.job }}</td>
                 <td>{{ row.position }}</td>
                 <td>{{ row.phone }}</td>
@@ -33,9 +33,19 @@
                 <td>{{ row.city }}</td>
                 <td>{% if not row.active %}<a type="button" class="btn btn-success" href="/active/{{ row.id }}">
                             Пришел</a> {% endif %}</td>
+                <td><a type="button" class="btn btn-primary" id="print" onclick="CallPrint(document.getElementById('fio_{{ row.id }}'))">Печать</a></td>
                 <td><a type="button" class="btn btn-secondary" href="/update/{{ row.id }}">Изменить</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <script>
+        function CallPrint(fio) {
+            var printContents = fio.innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 {% endblock %}
