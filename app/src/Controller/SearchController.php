@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SearchController extends AbstractController
@@ -24,7 +24,7 @@ class SearchController extends AbstractController
 
     public function searchBar()
     {
-        $form = $this->createFormBuilder(null)->add('query', TextType::class)
+        $form = $this->createFormBuilder(null)->add('query', SearchType::class)
             ->add(
                 'search',
                 SubmitType::class,
