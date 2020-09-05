@@ -9,17 +9,19 @@ use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class IndexController extends AbstractController
 {
     /**
-     * @Route("/", name="main_page")
+     * @Route("/admin", name="main_page")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(Request $request, UsersRepository $users)
     {
         $search = $request->get('search', null);
         $parameters = [
-            'users' => $users->findByAllFields(trim($search)),
+            'users'  => $users->findByAllFields(trim($search)),
             'search' => $search,
         ];
 
@@ -28,6 +30,7 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/active/{id}", name="setActive")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function active(Users $id)
     {
@@ -38,11 +41,12 @@ class IndexController extends AbstractController
         $em->flush();
         $em->clear();
 
-        return $this->redirect('/');
+        return $this->redirect('/admin');
     }
 
     /**
-     * @Route("/create", name = "createUser")
+     * @Route("/create", name = "create_page")
+     * @IsGranted("ROLE_USER")
      */
     public function create(Request $request)
     {
@@ -56,7 +60,12 @@ class IndexController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return $this->redirect('/');
+
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirect('/admin');
+            }
+
+            return $this->redirect('/create');
         }
 
         return $this->render(
@@ -67,6 +76,7 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/update/{id}", name="update_user")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function update(Request $request, Users $user)
     {
@@ -91,7 +101,7 @@ class IndexController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return $this->redirect('/');
+            return $this->redirect('/admin');
         }
 
         return $this->render(
@@ -102,6 +112,7 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/getXlsx", name="download_xlsx")
+     * @IsGranted("ROLE_ADMIN")
      * @param XlsxService $xlsxService
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
@@ -109,6 +120,7 @@ class IndexController extends AbstractController
     public function getXlsx(XlsxService $xlsxService, UsersRepository $users)
     {
         $users = $users->findAll();
+
         return $xlsxService->generate($users);
     }
 
