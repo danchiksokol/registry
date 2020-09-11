@@ -46,7 +46,6 @@ class IndexController extends AbstractController
 
     /**
      * @Route("/create", name = "create_page")
-     * @IsGranted("ROLE_USER")
      */
     public function create(Request $request)
     {
