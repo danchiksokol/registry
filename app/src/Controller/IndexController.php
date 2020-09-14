@@ -45,7 +45,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/create", name = "create_page")
+     * @Route("/", name = "create_page")
      */
     public function create(Request $request)
     {
@@ -64,7 +64,7 @@ class IndexController extends AbstractController
                 return $this->redirect('/admin');
             }
 
-            return $this->redirect('/create');
+            return $this->redirect('/');
         }
 
         return $this->render(
