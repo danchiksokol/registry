@@ -148,7 +148,9 @@ class IndexController extends AbstractController
                 }
                 $user->setLastname($fio[0]);
                 $user->setMiddlename($fio[1]);
-                $user->setFirstname($fio[2]);
+                if($fio[2]) {
+                    $user->setFirstname($fio[2]);
+                }
                 $user->setJob($row[1]);
                 $user->setPosition($row[2]);
                 $user->setPhone($row[3]);
