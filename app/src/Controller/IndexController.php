@@ -148,7 +148,7 @@ class IndexController extends AbstractController
                 }
                 $user->setLastname($fio[0]);
                 $user->setMiddlename($fio[1]);
-                if($fio[2]) {
+                if(isset($fio[2])) {
                     $user->setFirstname($fio[2]);
                 }
                 $user->setJob($row[1]);
