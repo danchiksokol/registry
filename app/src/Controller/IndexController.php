@@ -167,7 +167,7 @@ class IndexController extends AbstractController
                 $em->flush();
             }
 
-            return $this->redirect('/');
+            return $this->redirect('/admin');
         }
 
         return $this->render(
