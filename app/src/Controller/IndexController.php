@@ -23,7 +23,7 @@ class IndexController extends AbstractController
     {
         $search = $request->get('search', null);
         $parameters = [
-            'users'  => $users->findByAllFields(trim($search)),
+            'users' => $users->findByAllFields(trim($search)),
             'search' => $search,
         ];
 
@@ -142,13 +142,17 @@ class IndexController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form['uploadFile']->getData();
             $rows = $xlsxService->readExel($file);;
-            foreach($rows as $row) {
-                if($row[0]) {
+            foreach ($rows as $row) {
+                if ($row[0]) {
                     $fio = explode(" ", $row[0]);
                 }
-                $user->setLastname($fio[0]);
-                $user->setMiddlename($fio[1]);
-                if(isset($fio[2])) {
+                if (isset($fio[0])) {
+                    $user->setLastname($fio[0]);
+                }
+                if (isset($fio[1])) {
+                    $user->setMiddlename($fio[1]);
+                }
+                if (isset($fio[2])) {
                     $user->setFirstname($fio[2]);
                 }
                 $user->setJob($row[1]);
@@ -162,6 +166,7 @@ class IndexController extends AbstractController
                 $em->persist($user);
                 $em->flush();
             }
+
             return $this->redirect('/');
         }
 
