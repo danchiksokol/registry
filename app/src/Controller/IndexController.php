@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Form\UsersType;
+use App\Form\UploadFileType;
+use App\Services\UploadFileService;
 use App\Services\XlsxService;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +23,7 @@ class IndexController extends AbstractController
     {
         $search = $request->get('search', null);
         $parameters = [
-            'users'  => $users->findByAllFields(trim($search)),
+            'users' => $users->findByAllFields(trim($search)),
             'search' => $search,
         ];
 
@@ -121,6 +123,53 @@ class IndexController extends AbstractController
         $users = $users->findAll();
 
         return $xlsxService->generate($users);
+    }
+
+    /**
+     * @Route("/importExel", name="import_exel")
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * @param UploadFileService $fileService
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function importExel(Request $request, XlsxService $xlsxService)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = new Users();
+        $form = $this->createForm(UploadFileType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['uploadFile']->getData();
+            $rows = $xlsxService->readExel($file);;
+            foreach ($rows as $row) {
+                if (isset($row[0]) && !empty($row[0])) {
+                    $fio = explode(" ", $row[0]);
+                }
+                (isset($fio[0]) && !empty($fio[0])) ? $user->setLastname($fio[0]) : $user->setLastname('');
+                (isset($fio[1]) && !empty($fio[1])) ? $user->setMiddlename($fio[1]) : $user->setMiddlename('');
+                (isset($fio[2]) && !empty($fio[2])) ? $user->setFirstname($fio[2]) : $user->setFirstname('');
+
+                $user->setJob($row[1]);
+                $user->setPosition($row[2]);
+                $user->setPhone($row[3]);
+                $user->setEmail($row[4]);
+                $user->setCity($row[5]);
+                $user->setActive(false);
+
+                $em->persist($user);
+                $em->flush();
+                $em->clear();
+            }
+
+            return $this->redirect('/admin');
+        }
+
+        return $this->render(
+            'index/upload.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
 }

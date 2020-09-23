@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Импорт Exel{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="container">
+        {{ form_row(form.uploadFile) }}
+        <button class="btn btn-warning" type="submit">Загрузить</button>
+    </div>
+    {{ form_end(form) }}
+    <script>
+        document.querySelector('.custom-file-input').addEventListener('change',function(e){
+            var fileName = document.getElementById("upload_file_uploadFile").files[0].name;
+            var nextSibling = e.target.nextElementSibling
+            nextSibling.innerText = fileName
+        })
+    </script>
+{% endblock %}

@@ -24,11 +24,7 @@ class UsersType extends AbstractType
             ->add('email', EmailType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('country', TextType::class, ['required' => false])
-            ->add(
-                'active',
-                CheckboxType::class,
-                ['data' => true, 'required' => false]
-            );
+            ->add('active', CheckboxType::class, ['required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
