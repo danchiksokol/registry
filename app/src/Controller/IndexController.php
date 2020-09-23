@@ -82,9 +82,11 @@ class IndexController extends AbstractController
      */
     public function update(Request $request, Users $user)
     {
+        $show = $this->isGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(
             UsersType::class,
             $user,
+            ['show' => $show],
             [
                 'action' => $this->generateUrl(
                     'update_user',
@@ -148,9 +150,15 @@ class IndexController extends AbstractController
                 if (isset($row[0]) && !empty($row[0])) {
                     $fio = explode(" ", $row[0]);
                 }
-                (isset($fio[0]) && !empty($fio[0])) ? $user->setLastname($fio[0]) : $user->setLastname('');
-                (isset($fio[1]) && !empty($fio[1])) ? $user->setFirstname($fio[1]) : $user->setFirstname('');
-                (isset($fio[2]) && !empty($fio[2])) ? $user->setMiddlename($fio[2]) : $user->setMiddlename('');
+                (isset($fio[0]) && !empty($fio[0])) ? $user->setLastname(
+                    $fio[0]
+                ) : $user->setLastname('');
+                (isset($fio[1]) && !empty($fio[1])) ? $user->setFirstname(
+                    $fio[1]
+                ) : $user->setFirstname('');
+                (isset($fio[2]) && !empty($fio[2])) ? $user->setMiddlename(
+                    $fio[2]
+                ) : $user->setMiddlename('');
 
                 $user->setJob($row[1]);
                 $user->setPosition($row[2]);
