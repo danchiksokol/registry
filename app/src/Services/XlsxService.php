@@ -13,6 +13,12 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class XlsxService extends AbstractController
 {
 
+    /**
+     * @param $users
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
     public function generate($users)
     {
         $headers = [
@@ -32,24 +38,40 @@ class XlsxService extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle("Пользователь xslx");
-        foreach($headers as $k=>$v){
+        foreach ($headers as $k => $v) {
             $sheet->setCellValueByColumnAndRow($k, 1, $v);
         }
-        $i=2;
-        $key=0;
+        $i = 2;
+        $key = 0;
         foreach ($users as $user) {
-            $sheet->setCellValueByColumnAndRow($key++, $i, $user->getLastname());
-            $sheet->setCellValueByColumnAndRow($key++, $i, $user->getFirstname());
-            $sheet->setCellValueByColumnAndRow($key++, $i, $user->getMiddlename());
+            $sheet->setCellValueByColumnAndRow(
+                $key++,
+                $i,
+                $user->getLastname()
+            );
+            $sheet->setCellValueByColumnAndRow(
+                $key++,
+                $i,
+                $user->getFirstname()
+            );
+            $sheet->setCellValueByColumnAndRow(
+                $key++,
+                $i,
+                $user->getMiddlename()
+            );
             $sheet->setCellValueByColumnAndRow($key++, $i, $user->getJob());
-            $sheet->setCellValueByColumnAndRow($key++, $i, $user->getPosition());
+            $sheet->setCellValueByColumnAndRow(
+                $key++,
+                $i,
+                $user->getPosition()
+            );
             $sheet->setCellValueByColumnAndRow($key++, $i, $user->getPhone());
             $sheet->setCellValueByColumnAndRow($key++, $i, $user->getEmail());
             $sheet->setCellValueByColumnAndRow($key++, $i, $user->getCity());
             $sheet->setCellValueByColumnAndRow($key++, $i, $user->getCountry());
             $sheet->setCellValueByColumnAndRow($key++, $i, $user->getActive());
             $i++;
-            $key=0;
+            $key = 0;
         }
 //        $sheet->setCellValue('A1', 'Содержимое ячейки А1');
         $writer = new Xlsx($spreadsheet);
@@ -62,6 +84,38 @@ class XlsxService extends AbstractController
             $fileName,
             ResponseHeaderBag::DISPOSITION_INLINE
         );
+    }
+
+    /**
+     * @param $file
+     *
+     * @return array
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function readExel($file)
+    {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($file);
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $highestRow = $worksheet->getHighestRow();
+        $highestColumn = $worksheet->getHighestColumn();
+        $highestColumnIndex
+            = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString(
+            $highestColumn
+        );
+
+        $res = [];
+        for ($row = 2; $row < $highestRow; $row++) {
+            $res[$row] = [];
+            for ($col = 2; $col <= $highestColumnIndex; $col++) {
+                $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                $res[$row][] = $value;
+            }
+        }
+
+        return $res;
     }
 
 }

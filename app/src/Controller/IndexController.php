@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Form\UsersType;
+use App\Form\UploadFileType;
+use App\Services\UploadFileService;
 use App\Services\XlsxService;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -121,6 +123,50 @@ class IndexController extends AbstractController
         $users = $users->findAll();
 
         return $xlsxService->generate($users);
+    }
+
+    /**
+     * @Route("/importExel", name="import_exel")
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * @param UploadFileService $fileService
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function importExel(Request $request, XlsxService $xlsxService)
+    {
+        $user = new Users();
+        $form = $this->createForm(UploadFileType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['uploadFile']->getData();
+            $rows = $xlsxService->readExel($file);;
+            foreach($rows as $row) {
+                if($row[0]) {
+                    $fio = explode(" ", $row[0]);
+                }
+                $user->setLastname($fio[0]);
+                $user->setMiddlename($fio[1]);
+                $user->setFirstname($fio[2]);
+                $user->setJob($row[1]);
+                $user->setPosition($row[2]);
+                $user->setPhone($row[3]);
+                $user->setEmail($row[4]);
+                $user->setCity($row[5]);
+                $user->setActive(false);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+            }
+            return $this->redirect('/');
+        }
+
+        return $this->render(
+            'index/upload.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
 }
