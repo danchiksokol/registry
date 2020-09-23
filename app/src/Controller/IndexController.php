@@ -135,6 +135,7 @@ class IndexController extends AbstractController
      */
     public function importExel(Request $request, XlsxService $xlsxService)
     {
+        $em = $this->getDoctrine()->getManager();
         $user = new Users();
         $form = $this->createForm(UploadFileType::class);
         $form->handleRequest($request);
@@ -143,18 +144,13 @@ class IndexController extends AbstractController
             $file = $form['uploadFile']->getData();
             $rows = $xlsxService->readExel($file);;
             foreach ($rows as $row) {
-                if ($row[0]) {
+                if (isset($row[0]) && !empty($row[0])) {
                     $fio = explode(" ", $row[0]);
                 }
-                if (isset($fio[0])) {
-                    $user->setLastname($fio[0]);
-                }
-                if (isset($fio[1])) {
-                    $user->setMiddlename($fio[1]);
-                }
-                if (isset($fio[2])) {
-                    $user->setFirstname($fio[2]);
-                }
+                (isset($fio[0]) && !empty($fio[0])) ? $user->setLastname($fio[0]) : $user->setLastname('');
+                (isset($fio[1]) && !empty($fio[1])) ? $user->setMiddlename($fio[1]) : $user->setMiddlename('');
+                (isset($fio[2]) && !empty($fio[2])) ? $user->setFirstname($fio[2]) : $user->setFirstname('');
+
                 $user->setJob($row[1]);
                 $user->setPosition($row[2]);
                 $user->setPhone($row[3]);
@@ -162,9 +158,9 @@ class IndexController extends AbstractController
                 $user->setCity($row[5]);
                 $user->setActive(false);
 
-                $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
+                $em->clear();
             }
 
             return $this->redirect('/admin');
