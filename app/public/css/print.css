@@ -1,14 +1,22 @@
 @media print {
     body {
-        margin: auto;
-        color: #000;
-        background-color: #fff;
-        text-align: center;
-        font-weight: bold;
-        font-size: 30px;
+        position: relative;
+    }
+
+    .print {
         position: absolute;
+        left: 50%;
         top: 50%;
-        left: 30%;
-        margin: -25px 0 0 -25px
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    p{
+        color: black;
+        font-weight: bold;
+        font-size: 400%;
     }
 }

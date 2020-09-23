@@ -35,19 +35,29 @@
                 <td>{{ row.city }}</td>
                 <td>{% if not row.active %}<a type="button" class="btn btn-success" href="/active/{{ row.id }}">
                             Пришел</a> {% endif %}</td>
-                <td><a type="button" class="btn btn-primary" id="print" onclick="CallPrint(document.getElementById('fio_{{ row.id }}'))">Печать</a></td>
+                <td><a type="button" class="btn btn-primary" id="print" onclick="CallPrint('{{ row.lastname }}', '{{ row.Firstname }}', '{{ row.middlename }}')">Печать</a></td>
                 <td><a type="button" class="btn btn-secondary" href="/update/{{ row.id }}">Изменить</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     <script>
-        function CallPrint(fio) {
-            var printContents = fio.innerHTML;
-            var originalContents = document.body.innerHTML;
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
+        function CallPrint(f, i, o) {
+            var strOldOne = document.body.innerHTML;
+            var prtCSS = '<link rel="stylesheet" href="/css/print.css" type="text/css" />';
+            var WinPrint = window.open('','','left=50,top=50,width=800,height=640,toolbar=0,scrollbars=1,status=0');
+            WinPrint.document.write("<div class='print'>");
+            WinPrint.document.write(prtCSS);
+            WinPrint.document.write("<p>"+f+"</p>");
+            WinPrint.document.write("<p>"+i+"</p>");
+            WinPrint.document.write("<p>"+o+"</p>");
+            WinPrint.document.write("</div>");
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            WinPrint.onafterprint = function (event) {
+                WinPrint.close();
+            };
         }
     </script>
 {% endblock %}
