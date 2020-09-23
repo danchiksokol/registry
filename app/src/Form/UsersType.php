@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
 class UsersType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -23,8 +24,10 @@ class UsersType extends AbstractType
             ->add('phone', TextType::class, ['required' => false])
             ->add('email', EmailType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
-            ->add('country', TextType::class, ['required' => false])
-            ->add('active', CheckboxType::class, ['required' => false]);
+            ->add('country', TextType::class, ['required' => false]);
+        if ($options['show']) {
+            $builder->add('active', CheckboxType::class, ['required' => false]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -32,6 +35,7 @@ class UsersType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Users::class,
+                'show' => false,
             ]
         );
     }

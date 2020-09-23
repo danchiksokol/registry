@@ -46,10 +46,12 @@
                 <td scope="col">Город</td>
                 <td><label for="textarea"></label>{{ form_widget(form.city) }}</td>
             </tr>
-            <tr>
-                <td scope="col">Пришел</td>
-                <td><label for="checkbox"></label>{{ form_widget(form.active) }}</td>
-            </tr>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <tr>
+                    <td scope="col">Пришел</td>
+                    <td><label for="checkbox"></label>{{ form_widget(form.active) }}</td>
+                </tr>
+            {% endif %}
             </tbody>
         </table>
         <div>

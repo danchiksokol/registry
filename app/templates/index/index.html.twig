@@ -21,9 +21,11 @@
         </tr>
         </thead>
         <tbody>
+        {% set count = 0 %}
         {% for row in users %}
             <tr {% if row.active %} class="table-success" {% endif %}>
-                <td>{{ row.id }}</td>
+                {% set count = count + 1 %}
+                <td>{{ count }}</td>
                 <td class="fio" id="fio_{{ row.id }}">{{ row.lastname }} {{ row.Firstname }} {{ row.middlename }}</td>
                 <td>{{ row.job }}</td>
                 <td>{{ row.position }}</td>
