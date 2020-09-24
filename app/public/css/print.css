@@ -9,8 +9,9 @@
         transform: rotate(-180deg);
         text-align: center;
         width: 5px;
-        top: 50%;
-        left: 5%;
+        top: 43%;
+        left: 10%;
+        font-size: 200%;
     }
 
     .print {
@@ -26,9 +27,9 @@
 
     p {
         margin: 0px;
-        padding: 5px;
+        padding: 0px;
         color: black;
         font-weight: bold;
-        font-size: 600%;
+        font-size: 100px;
     }
 }
