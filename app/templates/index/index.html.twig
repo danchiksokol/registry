@@ -46,6 +46,7 @@
             var now = new Date();
             var day = now.getDate();
             var month = now.getMonth()+1;
+            month = month > 9 ? month : '0'+month;
             var year = now.getFullYear();
             var date = day+'.'+month+'.'+year;
             var prtCSS = '<link rel="stylesheet" href="/css/print.css" type="text/css" />';
