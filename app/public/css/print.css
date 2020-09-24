@@ -9,7 +9,7 @@
         transform: rotate(-180deg);
         text-align: center;
         width: 5px;
-        top: 43%;
+        top: 35%;
         left: 10%;
         font-size: 200%;
     }
@@ -27,10 +27,11 @@
 
     p {
         margin: 0px;
-        padding: 0px;
+        padding-top: -5px;
+        padding-bottom: -5px;
         color: black;
         font-weight: bold;
-        font-size: 150px;
+        font-size: 105px;
         text-align: center;
         font-family: arial;
     }
