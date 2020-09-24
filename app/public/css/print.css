@@ -3,6 +3,16 @@
         position: relative;
     }
 
+    .date {
+        position: absolute;
+        writing-mode: tb-rl;
+        transform: rotate(-180deg);
+        text-align: center;
+        width: 5px;
+        top: 50%;
+        left: 5%;
+    }
+
     .print {
         position: absolute;
         left: 50%;
@@ -14,17 +24,11 @@
         transform: translate(-50%, -50%);
     }
 
-    .date {
-        writing-mode: tb-rl;
-        transform: rotate(-180deg);
-        text-align: center;
-    }
-
     p {
-        margin: 5px;
-        padding: 10px;
-        color: black;
+        margin: 0px;
+        padding: 5px;
+        color: green;
         font-weight: bold;
-        font-size: 500%;
+        font-size: 600%;
     }
 }
