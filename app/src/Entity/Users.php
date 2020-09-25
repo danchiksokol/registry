@@ -65,7 +65,7 @@ class Users
     /**
      * @ORM\Column (type="boolean")
      */
-    private $active;
+    private $active=false;
 
     public function getId(): ?int
     {
