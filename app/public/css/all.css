@@ -1,0 +1,22 @@
+@media all {
+    body {
+        position: relative;
+    }
+
+    div.success {
+        height: 10em;
+        position: relative
+    }
+
+    div.success p {
+        margin: 0;
+        background: yellow;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        font-weight: bold;
+    }
+}

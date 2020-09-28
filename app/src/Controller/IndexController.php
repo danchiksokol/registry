@@ -67,7 +67,7 @@ class IndexController extends AbstractController
                 return $this->redirect('/admin');
             }
 
-            return $this->redirect('/');
+            return $this->render('user/success.html.twig');
         }
 
         return $this->render(
@@ -112,6 +112,23 @@ class IndexController extends AbstractController
             'user/form.html.twig',
             ['form' => $form->createView()]
         );
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_user")
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * @param Request $request
+     * @param Users   $user
+     */
+    public function delete(Request $request, Users $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+        $em->clear();
+
+        return $this->redirect('/admin');
     }
 
     /**

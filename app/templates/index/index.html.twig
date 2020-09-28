@@ -37,6 +37,7 @@
                             Пришел</a> {% endif %}</td>
                 <td><a type="button" class="btn btn-primary" id="print" onclick="CallPrint('{{ row.lastname }}', '{{ row.Firstname }}', '{{ row.middlename }}')">Печать</a></td>
                 <td><a type="button" class="btn btn-secondary" href="/update/{{ row.id }}">Изменить</a></td>
+                <td><a type="button" class="btn btn-danger" href="/delete/{{ row.id }}">X</a></td>
             </tr>
         {% endfor %}
         </tbody>

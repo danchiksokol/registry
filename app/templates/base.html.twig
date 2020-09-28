@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
           integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="/css/all.css" type="text/css" media="all">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
@@ -41,9 +42,9 @@
                             <a class="nav-link " href="{{ path('app_logout') }}">Выйти</a>
                         </li>
                     {% else %}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link " href="{{ path('app_login') }}">Войти</a>#}
-{#                        </li>#}
+                        {# <li class="nav-item"> #}
+                        {# <a class="nav-link " href="{{ path('app_login') }}">Войти</a> #}
+                        {# </li> #}
                     {% endif %}
                 </ul>
             </div>
@@ -52,9 +53,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <div class="col-sm-8">
-            {% block body %}{% endblock %}
-        </div>
+        {% block body %}{% endblock %}
     </div>
 </div>
 {% block javascripts %}{% endblock %}
